@@ -74,16 +74,20 @@ export async function generateWorkflow(prompt: string): Promise<WorkflowConfig> 
 
     // In the new SDK, generateContent is called on the `models` property of the GoogleGenAI instance.
     const result = await genAI.models.generateContent({
-      model: "gemini-pro", // Specify model directly
+      model: "gemini-2.0-flash", // Specify model directly
       contents: contents,
       // generationConfig: { ... } // Optional: if specific generation parameters are needed
       // safetySettings: { ... }   // Optional: if specific safety settings are needed
     });
 
     // Accessing the response text
-    // The new SDK's `GenerateContentResponse` object has a `text()` method.
-    const response = result.response; 
-    const text = response.text();
+    // The new SDK's `GenerateContentResponse` object has a `candidates` array, each with a `content` property.
+    const candidate = result.candidates?.[0];
+    if (!candidate || !candidate.content || !candidate.content.parts) {
+      throw new Error('No valid response candidate found');
+    }
+    // Concatenate all text parts
+    const text = candidate.content.parts.map((part: any) => part.text).join('');
     
     // Extract JSON from the response
     const jsonMatch = text.match(/\{[\s\S]*\}/);

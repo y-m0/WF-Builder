@@ -19,4 +19,4 @@ async function checkModel(modelName: string) {
 }
 
 // Check for a specific model
-checkModel('gemini-1.0-pro'); 
+checkModel('gemini-2.0-flash'); 
