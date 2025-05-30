@@ -12,6 +12,7 @@
   },
   "dependencies": {
     "@google/genai": "1.0.0",
+    "@google/generative-ai": "^0.24.1",
     "@radix-ui/react-accordion": "^1.2.11",
     "@radix-ui/react-alert-dialog": "^1.1.14",
     "@radix-ui/react-aspect-ratio": "^1.1.7",
@@ -64,6 +65,6 @@
     "typescript": "^5.5.3",
     "vite": "^5.3.4",
     "vite-node": "^3.1.4",
-    "vitest": "^2.0.4"
+    "vitest": "^2.1.9"
   }
 }
