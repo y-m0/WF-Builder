@@ -3,6 +3,7 @@ import { MessageCircle, Send, X } from 'lucide-react';
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 import { useWorkflowStore } from '../store/workflowStore';
+import { useDialogueStore } from '@/features/dialogue/store/dialogueStore';
 
 interface Message {
   id: string;
@@ -22,7 +23,14 @@ export function ChatWidget() {
   const [messages, setMessages] = useState<Message[]>([]);
   const [input, setInput] = useState('');
   const messagesEndRef = useRef<HTMLDivElement>(null);
-  const { generateWorkflowFromPrompt, isLoading, error, workflow } = useWorkflowStore();
+  const { workflow, error: workflowError } = useWorkflowStore();
+  const { 
+    processUserInput, 
+    isProcessing, 
+    error: dialogueError, 
+    currentIntent,
+    waitingForWorkflowName 
+  } = useDialogueStore();
 
   const scrollToBottom = () => {
     messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
@@ -34,7 +42,7 @@ export function ChatWidget() {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (!input.trim() || isLoading) return;
+    if (!input.trim() || isProcessing) return;
 
     const userMessage: Message = {
       id: Date.now().toString(),
@@ -47,25 +55,55 @@ export function ChatWidget() {
     setInput('');
 
     try {
-      await generateWorkflowFromPrompt(input);
+      await processUserInput(input);
       
-      const assistantMessage: Message = {
-        id: (Date.now() + 1).toString(),
-        content: error 
-          ? `Error: ${error}`
-          : workflow 
-            ? `I've generated a workflow with ${workflow.nodes.length} nodes. You can now review and modify it on the canvas.`
-            : "I'm sorry, I couldn't generate a workflow. Please try again.",
-        role: 'assistant',
-        timestamp: new Date(),
-      };
+      let assistantMessage: Message;
+      
+      if (dialogueError) {
+        assistantMessage = {
+          id: (Date.now() + 1).toString(),
+          content: `Error: ${dialogueError}`,
+          role: 'assistant',
+          timestamp: new Date(),
+        };
+      } else if (waitingForWorkflowName) {
+        assistantMessage = {
+          id: (Date.now() + 1).toString(),
+          content: "I'll create a workflow with that name. What would you like this workflow to do?",
+          role: 'assistant',
+          timestamp: new Date(),
+        };
+      } else if (currentIntent === 'CREATE_WORKFLOW') {
+        if (workflow) {
+          assistantMessage = {
+            id: (Date.now() + 1).toString(),
+            content: `I've created a workflow named "${workflow.name}" with ${workflow.nodes.length} nodes. You can now review and modify it on the canvas.`,
+            role: 'assistant',
+            timestamp: new Date(),
+          };
+        } else {
+          assistantMessage = {
+            id: (Date.now() + 1).toString(),
+            content: "What would you like to name your workflow?",
+            role: 'assistant',
+            timestamp: new Date(),
+          };
+        }
+      } else {
+        assistantMessage = {
+          id: (Date.now() + 1).toString(),
+          content: "I'm not sure what you'd like to do. Could you please rephrase your request?",
+          role: 'assistant',
+          timestamp: new Date(),
+        };
+      }
 
       setMessages(prev => [...prev, assistantMessage]);
     } catch (error) {
       console.error('Error:', error);
       const errorMessage: Message = {
         id: (Date.now() + 1).toString(),
-        content: "I'm sorry, I encountered an error while generating the workflow. Please try again.",
+        content: "I'm sorry, I encountered an error while processing your request. Please try again.",
         role: 'assistant',
         timestamp: new Date(),
       };
@@ -154,11 +192,11 @@ export function ChatWidget() {
                 type="text"
                 value={input}
                 onChange={(e) => setInput(e.target.value)}
-                placeholder="Describe your workflow..."
+                placeholder={waitingForWorkflowName ? "Enter workflow name..." : "Describe your workflow..."}
                 className="flex-1 px-3 py-2 bg-background border rounded-md focus:outline-none focus:ring-2 focus:ring-primary"
-                disabled={isLoading}
+                disabled={isProcessing}
               />
-              <Button type="submit" disabled={isLoading}>
+              <Button type="submit" disabled={isProcessing}>
                 <Send className="h-4 w-4" />
               </Button>
             </div>

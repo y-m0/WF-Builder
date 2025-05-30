@@ -42,7 +42,7 @@ function App() {
     edges: []
   });
   const [selectedNodes, setSelectedNodes] = useState<string[]>([]);
-  const { workflow: generatedWorkflow } = useWorkflowStore();
+  const { workflow: generatedWorkflow, createWorkflowRequest, clearCreateWorkflowRequest, addToolRequest, clearAddToolRequest } = useWorkflowStore();
 
   // Update workflow when generated workflow changes
   useEffect(() => {
@@ -55,6 +55,39 @@ function App() {
       });
     }
   }, [generatedWorkflow]);
+
+  // Listen for createWorkflowRequest and update workflow state
+  useEffect(() => {
+    if (createWorkflowRequest) {
+      setWorkflow(prev => ({
+        ...prev,
+        name: createWorkflowRequest.name,
+        nodes: [],
+        edges: []
+      }));
+      clearCreateWorkflowRequest();
+    }
+  }, [createWorkflowRequest, clearCreateWorkflowRequest]);
+
+  // Listen for addToolRequest and add a tool node
+  useEffect(() => {
+    if (addToolRequest) {
+      const newNode: Node = {
+        id: `node-${Date.now()}`,
+        type: 'action', // Default to 'action' type for tools
+        label: addToolRequest.name,
+        position: {
+          x: Math.random() * 400 + 50,
+          y: Math.random() * 300 + 50
+        }
+      };
+      setWorkflow(prev => ({
+        ...prev,
+        nodes: [...prev.nodes, newNode]
+      }));
+      clearAddToolRequest();
+    }
+  }, [addToolRequest, clearAddToolRequest]);
 
   const addNode = useCallback((type: Node['type'], label: string) => {
     const newNode: Node = {
