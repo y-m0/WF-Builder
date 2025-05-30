@@ -1,78 +1,57 @@
 import { create } from 'zustand';
-import { NLUResult, NLUIntent } from '@/features/nlu/nlu-types';
-import { useWorkflowStore } from '@/features/chatbot-gemini/store/workflowStore';
 
 interface DialogueState {
-  currentIntent: NLUIntent | null;
   isProcessing: boolean;
   error: string | null;
+  currentIntent: string | null;
   waitingForWorkflowName: boolean;
   processUserInput: (input: string) => Promise<void>;
-  clearError: () => void;
+  setError: (error: string | null) => void;
+  setCurrentIntent: (intent: string | null) => void;
+  setWaitingForWorkflowName: (waiting: boolean) => void;
 }
 
-export const useDialogueStore = create<DialogueState>((set, get) => ({
-  currentIntent: null,
+export const useDialogueStore = create<DialogueState>((set) => ({
   isProcessing: false,
   error: null,
+  currentIntent: null,
   waitingForWorkflowName: false,
 
   processUserInput: async (input: string) => {
     set({ isProcessing: true, error: null });
     try {
-      const state = get();
-      
-      // If we're waiting for a workflow name, treat the input as the name
-      if (state.waitingForWorkflowName) {
-        useWorkflowStore.getState().triggerCreateWorkflow(input);
-        set({ waitingForWorkflowName: false, currentIntent: null });
-        return;
+      const response = await fetch('http://localhost:3000/api/chat', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          message: input,
+          userId: 'user-1', // TODO: Get from auth
+          sessionId: 'session-1', // TODO: Generate unique session ID
+        }),
+      });
+
+      const data = await response.json();
+
+      if (!response.ok) {
+        throw new Error(data.messageForUser || 'Failed to process message');
       }
 
-      // TODO: Replace with actual NLU processing
-      // For now, we'll use a simple keyword-based approach
-      const lowerInput = input.toLowerCase();
-      let intent: NLUIntent | null = null;
-      let workflowName: string | null = null;
-
-      // Check for workflow creation intent
-      if (
-        lowerInput.includes('create') || 
-        lowerInput.includes('make') || 
-        lowerInput.includes('build') || 
-        lowerInput.includes('set up')
-      ) {
-        if (
-          lowerInput.includes('workflow') || 
-          lowerInput.includes('automation') || 
-          lowerInput.includes('process')
-        ) {
-          intent = 'CREATE_WORKFLOW';
-          // Extract workflow name if present
-          const nameMatch = input.match(/(?:workflow|automation|process) (?:called|named|for)? "?([^"]+)"?/i);
-          if (nameMatch) {
-            workflowName = nameMatch[1];
-          }
-        }
-      }
-
-      set({ currentIntent: intent });
-
-      // Handle the intent
-      if (intent === 'CREATE_WORKFLOW') {
-        if (workflowName) {
-          useWorkflowStore.getState().triggerCreateWorkflow(workflowName);
-        } else {
-          // If no name provided, set flag to wait for name
-          set({ waitingForWorkflowName: true });
-        }
-      }
+      set({
+        currentIntent: data.intent || null,
+        waitingForWorkflowName: data.status === 'clarification_needed',
+        isProcessing: false,
+      });
     } catch (error) {
-      set({ error: error instanceof Error ? error.message : 'An error occurred' });
-    } finally {
-      set({ isProcessing: false });
+      set({
+        error: error instanceof Error ? error.message : 'An unexpected error occurred',
+        isProcessing: false,
+      });
     }
   },
 
-  clearError: () => set({ error: null }),
+  setError: (error) => set({ error }),
+  setCurrentIntent: (intent) => set({ currentIntent: intent }),
+  setWaitingForWorkflowName: (waiting) => set({ waitingForWorkflowName: waiting }),
 })); 

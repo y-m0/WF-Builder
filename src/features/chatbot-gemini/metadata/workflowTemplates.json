@@ -1,0 +1,60 @@
+{
+  "templates": [
+    {
+      "templateId": "marketing_campaign",
+      "name": "Marketing Campaign Automation",
+      "description": "Automates the process of creating and executing marketing campaigns",
+      "allowedRoles": ["MarketingAnalyst", "MarketingManager", "Admin"],
+      "steps": [
+        {
+          "type": "connector",
+          "name": "Salesforce",
+          "description": "Connect to Salesforce to access customer data"
+        },
+        {
+          "type": "tool",
+          "name": "DataTransformer",
+          "description": "Transform customer data into campaign segments"
+        },
+        {
+          "type": "connector",
+          "name": "EmailService",
+          "description": "Send campaign emails to segmented customers"
+        },
+        {
+          "type": "tool",
+          "name": "ReportGenerator",
+          "description": "Generate campaign performance reports"
+        }
+      ]
+    },
+    {
+      "templateId": "financial_reconciliation",
+      "name": "Financial Reconciliation Process",
+      "description": "Automates the monthly financial reconciliation process",
+      "allowedRoles": ["FinancialAnalyst", "Accountant", "Admin"],
+      "steps": [
+        {
+          "type": "connector",
+          "name": "SAP",
+          "description": "Connect to SAP to access financial records"
+        },
+        {
+          "type": "tool",
+          "name": "DataTransformer",
+          "description": "Transform financial data into reconciliation format"
+        },
+        {
+          "type": "tool",
+          "name": "AuditLoggerTool",
+          "description": "Log all reconciliation activities"
+        },
+        {
+          "type": "tool",
+          "name": "ReportGenerator",
+          "description": "Generate reconciliation reports"
+        }
+      ]
+    }
+  ]
+} 
