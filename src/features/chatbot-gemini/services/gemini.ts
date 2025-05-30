@@ -100,49 +100,33 @@ export async function generateWorkflow(prompt: string): Promise<WorkflowConfig> 
 }
 
 export async function listAvailableModels() {
+  if (!genAI) {
+    console.error("Gemini AI client not initialized.");
+    return;
+  }
   try {
     console.log("Attempting to list available models with @google/genai SDK...");
-    // The new SDK's `GoogleGenAI` instance has a `models` property,
-    // which is expected to have a `list` method based on Python examples (client.models.list()).
-    // This returns an iterable or array of model information.
-    // Note: The actual method might be an async iterator or return a promise resolving to an array.
-    // The exact structure of `modelInfo` objects needs to be inferred or checked from docs if this runs.
     
-    // Based on Python client.models.list() which returns an iterable of Model objects.
-    // Each Model object has attributes like 'name', 'supported_generation_methods'
-    // Let's assume a similar structure for JS/TS.
-    // The `list` method itself might be paginated in more complex scenarios, but for now,
-    // we'll assume it returns something directly iterable or an array.
+    // Extensive comments about uncertainty regarding a direct listModels method in JS SDK v1.0.0.
+    // The core of the message is to reflect the current state of knowledge.
+    console.log(`Currently configured to use model: "gemini-pro" which translates to "models/gemini-pro" in API calls.`);
+    console.log("Note: A direct model listing method in `@google/genai@1.0.0` JS SDK is not readily apparent from documentation snippets reviewed so far.");
+    console.log("The API error message 'Call ListModels' might refer to a capability of the backend API accessible via other tools (like gcloud CLI) or newer/different SDK versions.");
     
-    // The `list` method is not directly documented with JS examples in the migration guide,
-    // but is a logical counterpart to Python's `client.models.list()`.
-    // If this specific method name is incorrect, an error will occur,
-    // and it might need adjustment based on the actual SDK API for v1.0.0.
-    
-    // Placeholder for the actual listing.
-    // The `genAI.models` object is a `GenerativeModelService`.
-    // There isn't a direct `list()` method on `GenerativeModelService` in the typings for 1.0.0.
-    // Listing models might be done differently, perhaps via a different service or it's not exposed at this level.
-    // The migration guide showed Python `client.models.list()`.
-    // Let's check common locations or if it's a top-level method on `genAI` itself.
-    // Re-checking documentation for `@google/genai` for listing models is needed if this fails.
-    // For now, I will comment this out as its existence and precise usage in JS 1.0.0 is not certain from current docs.
+    // Hypothetical example of what it *might* look like if a method existed and was found:
     /*
-    const models = await genAI.models.list(); // This is a guess
-    console.log("Available models:");
-    for (const model of models) { // Assuming it's an array or iterable
-      console.log(`- Name: ${model.name}`);
+    const models = await genAI.models.list(); // Hypothetical, actual method name and object structure unknown
+    console.log("Available models (if listing method was found and successful):");
+    // Assuming 'models' is an iterable or array, and each 'model' has a 'name' property
+    for await (const model of models) { // Use 'for await...of' if it's an async iterator
+      console.log(\`- Name: ${model.name}\`); 
+      // Add more properties if available and relevant, e.g., model.supportedGenerationMethods
       if (model.supportedGenerationMethods) {
-        console.log(`  Supported Methods: ${model.supportedGenerationMethods.join(", ")}`);
+         console.log(\`  Supported Methods: ${model.supportedGenerationMethods.join(", ")}\`);
       }
     }
     */
-    console.log("Model listing functionality (`genAI.models.list()`) needs to be verified for the @google/genai JS SDK v1.0.0.");
-    console.log("The Python SDK uses `client.models.list()`. The JS equivalent is not explicitly shown in basic guides.");
-    console.log("For now, this function serves as a placeholder for where model listing would be implemented.");
-
   } catch (error) {
-    console.error("Error attempting to list models:", error);
-    // It's possible the method doesn't exist or API key doesn't have permissions if it's a permission error.
+    console.error("Error during model listing attempt (if a method was called):", error);
   }
 }
