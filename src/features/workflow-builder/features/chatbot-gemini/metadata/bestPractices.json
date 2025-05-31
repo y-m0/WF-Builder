@@ -1,0 +1,39 @@
+{
+  "practices": [
+    {
+      "practiceId": "large_dataset_handling",
+      "name": "Large Dataset Processing",
+      "description": "Best practices for handling large datasets efficiently",
+      "triggerConditions": {
+        "nodeTypeAdded": ["DataQueryTool", "DataTransformer"],
+        "inputHints": ["large dataset", "millions of records", "big data"]
+      },
+      "suggestionText": "For processing {userInputHint}, consider adding a data sampling step first to validate the transformation logic on a smaller subset.",
+      "remediationAction": {
+        "toolToAdd": "DataSamplerTool",
+        "parameters": {
+          "sampleSize": "1000",
+          "samplingMethod": "random"
+        }
+      }
+    },
+    {
+      "practiceId": "error_handling",
+      "name": "Robust Error Handling",
+      "description": "Ensures workflows can handle errors gracefully",
+      "triggerConditions": {
+        "nodeTypeAdded": ["Connector", "ExternalService"],
+        "operationType": ["data_transfer", "api_call"]
+      },
+      "suggestionText": "Consider adding error handling for {userInputHint} to ensure the workflow can recover from temporary failures.",
+      "remediationAction": {
+        "toolToAdd": "ErrorHandlerTool",
+        "parameters": {
+          "retryAttempts": 3,
+          "retryDelay": "5s",
+          "fallbackAction": "notify_admin"
+        }
+      }
+    }
+  ]
+}

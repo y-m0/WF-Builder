@@ -1,0 +1,67 @@
+{
+  "tools": [
+    {
+      "toolId": "data_transformer",
+      "name": "DataTransformer",
+      "description": "Transform and process data between different formats and structures",
+      "parameters": [
+        {
+          "name": "input_format",
+          "label": "Input Format",
+          "type": "select",
+          "required": true,
+          "options": ["JSON", "CSV", "XML", "Parquet"],
+          "description": "Format of the input data"
+        },
+        {
+          "name": "output_format",
+          "label": "Output Format",
+          "type": "select",
+          "required": true,
+          "options": ["JSON", "CSV", "XML", "Parquet"],
+          "description": "Desired format for the output data"
+        },
+        {
+          "name": "transformation_rules",
+          "label": "Transformation Rules",
+          "type": "string",
+          "required": true,
+          "description": "JSON path expressions for field mapping and transformations"
+        }
+      ],
+      "wfBuilderFunction": "add_data_transformer_step",
+      "handlesDataTypes": ["structured_data", "semi_structured_data"]
+    },
+    {
+      "toolId": "report_generator",
+      "name": "ReportGenerator",
+      "description": "Generate formatted reports from data with customizable templates",
+      "parameters": [
+        {
+          "name": "template_type",
+          "label": "Template Type",
+          "type": "select",
+          "required": true,
+          "options": ["PDF", "Excel", "HTML", "Word"],
+          "description": "Type of report template to use"
+        },
+        {
+          "name": "schedule",
+          "label": "Schedule",
+          "type": "string",
+          "required": false,
+          "description": "Cron expression for report generation schedule"
+        },
+        {
+          "name": "recipients",
+          "label": "Recipients",
+          "type": "string",
+          "required": true,
+          "description": "Comma-separated list of email addresses"
+        }
+      ],
+      "wfBuilderFunction": "add_report_generator_step",
+      "handlesDataTypes": ["report_data", "aggregated_data"]
+    }
+  ]
+}

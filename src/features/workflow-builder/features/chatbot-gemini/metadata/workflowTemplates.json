@@ -1,0 +1,103 @@
+{
+  "templates": [
+    {
+      "templateId": "data_pipeline",
+      "name": "Data Pipeline Automation",
+      "description": "Orchestrates data processing and transformation workflows",
+      "allowedRoles": ["DataEngineer", "DataAnalyst", "Admin"],
+      "steps": [
+        {
+          "type": "trigger",
+          "name": "Event Trigger",
+          "description": "Monitors data source for new files"
+        },
+        {
+          "type": "action",
+          "name": "Data Validation",
+          "description": "Validates data structure and quality"
+        },
+        {
+          "type": "condition",
+          "name": "Decision Gate",
+          "description": "Routes data based on validation results"
+        },
+        {
+          "type": "io",
+          "name": "Data Operation",
+          "description": "Transforms and processes data"
+        },
+        {
+          "type": "agent",
+          "name": "AI Service",
+          "description": "Applies ML models for data enrichment"
+        }
+      ]
+    },
+    {
+      "templateId": "service_orchestration",
+      "name": "Service Orchestration Flow",
+      "description": "Coordinates multiple microservices and APIs",
+      "allowedRoles": ["SystemArchitect", "DevOpsEngineer", "Admin"],
+      "steps": [
+        {
+          "type": "trigger",
+          "name": "Event Trigger",
+          "description": "Listens for API requests or system events"
+        },
+        {
+          "type": "logic",
+          "name": "Process Step",
+          "description": "Handles request validation and routing"
+        },
+        {
+          "type": "condition",
+          "name": "Decision Gate",
+          "description": "Routes requests based on service availability"
+        },
+        {
+          "type": "action",
+          "name": "Action Step",
+          "description": "Executes service calls and operations"
+        },
+        {
+          "type": "io",
+          "name": "Data Operation",
+          "description": "Manages service response data"
+        }
+      ]
+    },
+    {
+      "templateId": "ml_pipeline",
+      "name": "ML Model Pipeline",
+      "description": "Automates machine learning model training and deployment",
+      "allowedRoles": ["DataScientist", "MLEngineer", "Admin"],
+      "steps": [
+        {
+          "type": "trigger",
+          "name": "Event Trigger",
+          "description": "Initiates model training cycle"
+        },
+        {
+          "type": "io",
+          "name": "Data Operation",
+          "description": "Prepares training data"
+        },
+        {
+          "type": "agent",
+          "name": "AI Service",
+          "description": "Trains and validates model"
+        },
+        {
+          "type": "condition",
+          "name": "Decision Gate",
+          "description": "Evaluates model performance"
+        },
+        {
+          "type": "action",
+          "name": "Action Step",
+          "description": "Deploys or retrains model"
+        }
+      ]
+    }
+  ]
+}
