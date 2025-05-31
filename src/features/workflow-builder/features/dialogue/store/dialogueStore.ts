@@ -20,7 +20,7 @@ export const useDialogueStore = create<DialogueState>((set) => ({
   processUserInput: async (input: string) => {
     set({ isProcessing: true, error: null });
     try {
-      const response = await fetch('http://localhost:3000/api/chat', {
+      const response = await fetch('/api/chat', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

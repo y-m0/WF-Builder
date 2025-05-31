@@ -1,0 +1,65 @@
+## WF-Builder Integration into Orchestration Nexus UI
+
+**Goal:** This PR integrates the WF-Builder (a chatbot-driven workflow design tool) into the main Orchestration Nexus UI application, allowing users to access both the existing visual workflow editor and the new WF-Builder interface.
+
+**Major Changes Completed:**
+
+1.  **Source File Integration (Part 1):**
+    *   Copied relevant WF-Builder source files (`App.tsx`, `components/`, `features/`, `lib/`, `types/`) into `src/features/workflow-builder/`.
+    *   Removed unnecessary standalone files (`main.tsx`, `index.css`, server-specific files) from the copied directory.
+
+2.  **UI Component Refactoring (Part 2):**
+    *   Removed redundant UI components (`theme-provider.tsx`, `theme-toggle.tsx`, `layout.tsx`) from the WF-Builder's copied sources.
+    *   Consolidated the `Button` component, deleting WF-Builder's version as it was identical to the main app's.
+    *   Refactored `src/features/workflow-builder/App.tsx` (now `WFBuilderPage.tsx`) to remove dependencies on deleted layout/theme components and ensure correct button usage.
+
+3.  **Routing Setup (Part 3):**
+    *   Installed `react-router-dom`.
+    *   Renamed the original `src/App.tsx` to `src/pages/MainWorkflowEditorPage.tsx`.
+    *   Created a new `src/App.tsx` to configure routes:
+        *   `/`: Renders `MainWorkflowEditorPage`.
+        *   `/workflows/builder`: Renders `WFBuilderPage` (the integrated WF-Builder UI).
+    *   The main `Layout` component now wraps these routes.
+    *   Renamed the main exported component in `src/features/workflow-builder/App.tsx` to `WFBuilderPage`.
+
+4.  **Navigation Update (Part 4):**
+    *   Updated `src/components/layout.tsx` to include navigation links in the header:
+        *   "Editor" link to `/`.
+        *   "WF Builder" link to `/workflows/builder`.
+
+5.  **State Management Consolidation (Part 5):**
+    *   Updated `ChatWidget.tsx` within WF-Builder and `WFBuilderPage.tsx` itself to use the main application's `useWorkflowStore` (from `@/features/chatbot-gemini/store/workflowStore`).
+    *   Deleted the redundant `workflowStore.ts` from WF-Builder's copied feature set.
+    *   Updated the API call in WF-Builder's `dialogueStore.ts` to use a relative path (`/api/chat`) for backend communication, preparing for proxying/deployment.
+
+6.  **Testing and Documentation Prep (Part 6 - this PR includes test addition):**
+    *   Added testing libraries (`@testing-library/react`, `@testing-library/jest-dom`, `@testing-library/user-event`).
+    *   Added an initial component test for `ChatWidget.tsx` (`src/features/workflow-builder/features/chatbot-gemini/components/ChatWidget.test.tsx`) with store and icon mocks.
+    *   Added a `TODO` comment in `src/App.tsx` regarding route protection for `/workflows/builder`.
+    *   Prepared this PR description and README updates.
+
+**How to Test:**
+
+1.  Ensure all dependencies are installed: `npm install`.
+2.  Run the development server: `npm run dev`.
+3.  Navigate to the application in your browser (usually `http://localhost:5173` or similar).
+4.  Test the navigation:
+    *   Click "Editor" in the header. You should see the main workflow editor interface.
+    *   Click "WF Builder" in the header. You should see the integrated WF-Builder interface.
+5.  Test the WF-Builder functionality:
+    *   Interact with the chatbot in the WF-Builder page. Try creating a workflow (e.g., "Create a workflow named My Test Flow").
+    *   Verify that the workflow visualization updates based on chatbot interactions.
+    *   (Note: The backend for the chatbot, `npm run dev:backend`, needs to be running for full WF-Builder functionality).
+6.  Run tests: `npm test` (or `npm run test:ui` for the UI). Verify the new `ChatWidget.test.tsx` passes.
+
+**TODOs / Next Steps:**
+
+*   **Authentication & Authorization:** Protect the `/workflows/builder` route once an authentication system is implemented.
+*   **API Proxy/Backend Integration:** Ensure the `/api/chat` endpoint used by the WF-Builder's `dialogueStore` is correctly proxied or handled by the main application's backend in a production-like environment. The current setup assumes the standalone WF-Builder backend (`src/features/chatbot-gemini/server.ts`) is running for the chat functionality.
+*   **Comprehensive Testing:** Add more detailed tests for both the main editor and the WF-Builder components, including interaction tests.
+*   **Styling Harmonization:** Further review and refine styles within the WF-Builder components to ensure seamless visual integration with the main application.
+*   **Error Handling & UX:** Improve error handling and overall user experience in the integrated WF-Builder.
+*   **Code Cleanup:** Address any remaining `TODO` comments and perform general code cleanup.
+*   **Full Backend Integration:** The chatbot backend (`server.ts`) is currently separate. Plan for its full integration into the main application's backend infrastructure.
+
+This integration provides a significant step towards a unified workflow design experience.
