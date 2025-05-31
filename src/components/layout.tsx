@@ -1,4 +1,5 @@
 import { Button } from "@/components/ui/button"
+import { ThemeToggle } from "@/components/theme-toggle"
 
 export function Layout({ children }: { children: React.ReactNode }) {
   return (
@@ -18,6 +19,7 @@ export function Layout({ children }: { children: React.ReactNode }) {
               <Button variant="ghost" size="sm">
                 GitHub
               </Button>
+              <ThemeToggle />
             </nav>
           </div>
         </div>
