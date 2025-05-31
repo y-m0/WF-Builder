@@ -8,6 +8,8 @@ function App() {
     <Layout> {/* Layout now wraps all routes */}
       <Routes>
         <Route path="/" element={<MainWorkflowEditorPage />} />
+        {/* TODO: Protect this route with authentication and role-based access control */}
+        {/* once an auth system is implemented (e.g., using a HOC or a wrapper component). */}
         <Route path="/workflows/builder" element={<WFBuilderPage />} />
       </Routes>
     </Layout>

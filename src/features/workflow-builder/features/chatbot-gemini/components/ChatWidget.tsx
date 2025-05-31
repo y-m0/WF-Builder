@@ -2,7 +2,7 @@ import React, { useState, useRef, useEffect } from 'react';
 import { MessageCircle, Send, X } from 'lucide-react';
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
-import { useWorkflowStore } from '../store/workflowStore';
+import { useWorkflowStore } from '@/features/chatbot-gemini/store/workflowStore';
 import { useDialogueStore } from '@/features/dialogue/store/dialogueStore';
 
 interface Message {
