@@ -3,7 +3,7 @@ import { MessageCircle, Send, X } from 'lucide-react';
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 import { useWorkflowStore } from '@/features/chatbot-gemini/store/workflowStore';
-import { useDialogueStore } from '@/features/dialogue/store/dialogueStore';
+import { useDialogueStore } from '@/features/workflow-builder/features/dialogue/store/dialogueStore';
 
 interface Message {
   id: string;
