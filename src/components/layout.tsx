@@ -8,15 +8,15 @@ export function Layout({ children }: { children: React.ReactNode }) {
         <div className="container flex h-14 items-center">
           <div className="mr-4 flex">
             <a className="mr-6 flex items-center space-x-2" href="/">
-              <span className="font-bold text-foreground/90">Workflow Builder</span>
+              <span className="font-bold text-gradient">Workflow Builder</span>
             </a>
           </div>
           <div className="flex flex-1 items-center justify-between space-x-2 md:justify-end">
             <nav className="flex items-center space-x-2">
-              <Button variant="ghost" size="sm">
+              <Button variant="ghost" size="sm" className="text-foreground/70 hover:text-foreground/90">
                 Documentation
               </Button>
-              <Button variant="ghost" size="sm">
+              <Button variant="ghost" size="sm" className="text-foreground/70 hover:text-foreground/90">
                 GitHub
               </Button>
               <ThemeToggle />
