@@ -3,11 +3,11 @@ import { Button } from "@/components/ui/button"
 export function Layout({ children }: { children: React.ReactNode }) {
   return (
     <div className="min-h-screen bg-background">
-      <header className="sticky top-0 z-50 w-full border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
+      <header className="sticky top-0 z-50 w-full border-b border-border/40 bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
         <div className="container flex h-14 items-center">
           <div className="mr-4 flex">
             <a className="mr-6 flex items-center space-x-2" href="/">
-              <span className="font-bold">Workflow Builder</span>
+              <span className="font-bold text-foreground/90">Workflow Builder</span>
             </a>
           </div>
           <div className="flex flex-1 items-center justify-between space-x-2 md:justify-end">
@@ -27,4 +27,4 @@ export function Layout({ children }: { children: React.ReactNode }) {
       </main>
     </div>
   )
-} 
+}

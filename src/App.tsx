@@ -26,12 +26,12 @@ interface WorkflowData {
 }
 
 const nodeTypes = [
-  { type: 'trigger', label: 'Email Trigger', icon: Zap, color: 'bg-blue-100 border-blue-300' },
-  { type: 'action', label: 'Send Message', icon: Bot, color: 'bg-green-100 border-green-300' },
-  { type: 'condition', label: 'Check Status', icon: GitBranch, color: 'bg-yellow-100 border-yellow-300' },
-  { type: 'agent', label: 'AI Agent', icon: Bot, color: 'bg-purple-100 border-purple-300' },
-  { type: 'logic', label: 'Human Step', icon: User, color: 'bg-pink-100 border-pink-300' },
-  { type: 'io', label: 'Database', icon: Database, color: 'bg-gray-100 border-gray-300' },
+  { type: 'trigger', label: 'Email Trigger', icon: Zap, color: 'bg-blue-900/20 border-blue-500/30 hover:bg-blue-900/30' },
+  { type: 'action', label: 'Send Message', icon: Bot, color: 'bg-green-900/20 border-green-500/30 hover:bg-green-900/30' },
+  { type: 'condition', label: 'Check Status', icon: GitBranch, color: 'bg-yellow-900/20 border-yellow-500/30 hover:bg-yellow-900/30' },
+  { type: 'agent', label: 'AI Agent', icon: Bot, color: 'bg-purple-900/20 border-purple-500/30 hover:bg-purple-900/30' },
+  { type: 'logic', label: 'Human Step', icon: User, color: 'bg-pink-900/20 border-pink-500/30 hover:bg-pink-900/30' },
+  { type: 'io', label: 'Database', icon: Database, color: 'bg-slate-800/40 border-slate-500/30 hover:bg-slate-800/60' },
 ];
 
 function App() {
@@ -44,7 +44,6 @@ function App() {
   const [selectedNodes, setSelectedNodes] = useState<string[]>([]);
   const { workflow: generatedWorkflow, createWorkflowRequest, clearCreateWorkflowRequest, addToolRequest, clearAddToolRequest } = useWorkflowStore();
 
-  // Update workflow when generated workflow changes
   useEffect(() => {
     if (generatedWorkflow) {
       setWorkflow({
@@ -56,7 +55,6 @@ function App() {
     }
   }, [generatedWorkflow]);
 
-  // Listen for createWorkflowRequest and update workflow state
   useEffect(() => {
     if (createWorkflowRequest) {
       setWorkflow(prev => ({
@@ -69,12 +67,11 @@ function App() {
     }
   }, [createWorkflowRequest, clearCreateWorkflowRequest]);
 
-  // Listen for addToolRequest and add a tool node
   useEffect(() => {
     if (addToolRequest) {
       const newNode: Node = {
         id: `node-${Date.now()}`,
-        type: 'action', // Default to 'action' type for tools
+        type: 'action',
         label: addToolRequest.name,
         position: {
           x: Math.random() * 400 + 50,
@@ -135,8 +132,8 @@ function App() {
     <Layout>
       <div className="flex h-[calc(100vh-4rem)]">
         {/* Sidebar */}
-        <div className="w-64 border-r bg-background p-4">
-          <h2 className="text-lg font-semibold mb-4 flex items-center">
+        <div className="w-64 border-r border-border/40 bg-background/95 p-4">
+          <h2 className="text-lg font-semibold mb-4 flex items-center text-foreground/90">
             <Workflow className="mr-2 h-5 w-5" />
             Node Palette
           </h2>
@@ -145,7 +142,7 @@ function App() {
               <Button
                 key={type}
                 variant="outline"
-                className={`w-full justify-start ${color}`}
+                className={`w-full justify-start border ${color}`}
                 onClick={() => addNode(type as Node['type'], label)}
               >
                 <Icon className="mr-2 h-4 w-4" />
@@ -158,14 +155,14 @@ function App() {
         {/* Main Canvas */}
         <div className="flex-1 flex flex-col">
           {/* Header */}
-          <div className="border-b bg-background p-4">
+          <div className="border-b border-border/40 bg-background/95 p-4">
             <div className="flex items-center justify-between">
               <div className="flex items-center space-x-4">
                 <input
                   type="text"
                   value={workflow.name}
                   onChange={(e) => setWorkflow(prev => ({ ...prev, name: e.target.value }))}
-                  className="text-xl font-semibold bg-transparent border-none outline-none"
+                  className="text-xl font-semibold bg-transparent border-none outline-none text-foreground/90"
                 />
                 <span className="text-sm text-muted-foreground">({workflow.nodes.length} nodes)</span>
               </div>
@@ -195,7 +192,7 @@ function App() {
 
           {/* Canvas */}
           <div 
-            className="flex-1 relative bg-muted/20 overflow-hidden"
+            className="flex-1 relative bg-background/95 overflow-hidden"
             onClick={(e) => {
               if (e.target === e.currentTarget) {
                 setSelectedNodes([]);
@@ -204,9 +201,9 @@ function App() {
           >
             {/* Grid Pattern */}
             <div 
-              className="absolute inset-0 opacity-20"
+              className="absolute inset-0 opacity-10"
               style={{
-                backgroundImage: 'radial-gradient(circle, #000 1px, transparent 1px)',
+                backgroundImage: 'radial-gradient(circle, hsl(var(--border)) 1px, transparent 1px)',
                 backgroundSize: '20px 20px'
               }}
             />
@@ -241,7 +238,7 @@ function App() {
               return (
                 <div
                   key={node.id}
-                  className={`absolute w-36 h-12 p-2 border rounded-lg bg-background shadow-md cursor-pointer transition-all ${
+                  className={`absolute w-36 h-12 p-2 border rounded-lg bg-background/95 shadow-md cursor-pointer transition-all ${
                     isSelected ? 'ring-2 ring-primary' : 'hover:shadow-lg'
                   } ${nodeType?.color}`}
                   style={{ left: node.position.x, top: node.position.y }}
@@ -256,7 +253,7 @@ function App() {
                 >
                   <div className="flex items-center">
                     <Icon className="mr-1 h-4 w-4" />
-                    <span className="text-xs font-medium truncate">{node.label}</span>
+                    <span className="text-xs font-medium truncate text-foreground/90">{node.label}</span>
                   </div>
                   <div className="text-xxs text-muted-foreground capitalize">{node.type}</div>
                 </div>
@@ -283,4 +280,4 @@ function App() {
   );
 }
 
-export default App
+export default App;
