@@ -1,60 +1,103 @@
 {
   "templates": [
     {
-      "templateId": "marketing_campaign",
-      "name": "Marketing Campaign Automation",
-      "description": "Automates the process of creating and executing marketing campaigns",
-      "allowedRoles": ["MarketingAnalyst", "MarketingManager", "Admin"],
+      "templateId": "data_pipeline",
+      "name": "Data Pipeline Automation",
+      "description": "Orchestrates data processing and transformation workflows",
+      "allowedRoles": ["DataEngineer", "DataAnalyst", "Admin"],
       "steps": [
         {
-          "type": "connector",
-          "name": "Salesforce",
-          "description": "Connect to Salesforce to access customer data"
+          "type": "trigger",
+          "name": "Event Trigger",
+          "description": "Monitors data source for new files"
         },
         {
-          "type": "tool",
-          "name": "DataTransformer",
-          "description": "Transform customer data into campaign segments"
+          "type": "action",
+          "name": "Data Validation",
+          "description": "Validates data structure and quality"
         },
         {
-          "type": "connector",
-          "name": "EmailService",
-          "description": "Send campaign emails to segmented customers"
+          "type": "condition",
+          "name": "Decision Gate",
+          "description": "Routes data based on validation results"
         },
         {
-          "type": "tool",
-          "name": "ReportGenerator",
-          "description": "Generate campaign performance reports"
+          "type": "io",
+          "name": "Data Operation",
+          "description": "Transforms and processes data"
+        },
+        {
+          "type": "agent",
+          "name": "AI Service",
+          "description": "Applies ML models for data enrichment"
         }
       ]
     },
     {
-      "templateId": "financial_reconciliation",
-      "name": "Financial Reconciliation Process",
-      "description": "Automates the monthly financial reconciliation process",
-      "allowedRoles": ["FinancialAnalyst", "Accountant", "Admin"],
+      "templateId": "service_orchestration",
+      "name": "Service Orchestration Flow",
+      "description": "Coordinates multiple microservices and APIs",
+      "allowedRoles": ["SystemArchitect", "DevOpsEngineer", "Admin"],
       "steps": [
         {
-          "type": "connector",
-          "name": "SAP",
-          "description": "Connect to SAP to access financial records"
+          "type": "trigger",
+          "name": "Event Trigger",
+          "description": "Listens for API requests or system events"
         },
         {
-          "type": "tool",
-          "name": "DataTransformer",
-          "description": "Transform financial data into reconciliation format"
+          "type": "logic",
+          "name": "Process Step",
+          "description": "Handles request validation and routing"
         },
         {
-          "type": "tool",
-          "name": "AuditLoggerTool",
-          "description": "Log all reconciliation activities"
+          "type": "condition",
+          "name": "Decision Gate",
+          "description": "Routes requests based on service availability"
         },
         {
-          "type": "tool",
-          "name": "ReportGenerator",
-          "description": "Generate reconciliation reports"
+          "type": "action",
+          "name": "Action Step",
+          "description": "Executes service calls and operations"
+        },
+        {
+          "type": "io",
+          "name": "Data Operation",
+          "description": "Manages service response data"
+        }
+      ]
+    },
+    {
+      "templateId": "ml_pipeline",
+      "name": "ML Model Pipeline",
+      "description": "Automates machine learning model training and deployment",
+      "allowedRoles": ["DataScientist", "MLEngineer", "Admin"],
+      "steps": [
+        {
+          "type": "trigger",
+          "name": "Event Trigger",
+          "description": "Initiates model training cycle"
+        },
+        {
+          "type": "io",
+          "name": "Data Operation",
+          "description": "Prepares training data"
+        },
+        {
+          "type": "agent",
+          "name": "AI Service",
+          "description": "Trains and validates model"
+        },
+        {
+          "type": "condition",
+          "name": "Decision Gate",
+          "description": "Evaluates model performance"
+        },
+        {
+          "type": "action",
+          "name": "Action Step",
+          "description": "Deploys or retrains model"
         }
       ]
     }
   ]
-} 
+}
