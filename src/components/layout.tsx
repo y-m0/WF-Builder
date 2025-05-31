@@ -1,4 +1,5 @@
 import { Button } from "@/components/ui/button"
+import { Link } from "react-router-dom"
 
 export function Layout({ children }: { children: React.ReactNode }) {
   return (
@@ -12,11 +13,11 @@ export function Layout({ children }: { children: React.ReactNode }) {
           </div>
           <div className="flex flex-1 items-center justify-between space-x-2 md:justify-end">
             <nav className="flex items-center space-x-2">
-              <Button variant="ghost" size="sm">
-                Documentation
+              <Button asChild variant="ghost" size="sm">
+                <Link to="/">Editor</Link>
               </Button>
-              <Button variant="ghost" size="sm">
-                GitHub
+              <Button asChild variant="ghost" size="sm">
+                <Link to="/workflows/builder">WF Builder</Link>
               </Button>
             </nav>
           </div>

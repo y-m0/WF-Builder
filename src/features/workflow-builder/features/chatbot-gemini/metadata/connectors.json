@@ -1,0 +1,57 @@
+{
+  "connectors": [
+    {
+      "connectorId": "salesforce",
+      "name": "Salesforce",
+      "description": "Connect to Salesforce CRM to access customer data and perform operations",
+      "parameters": [
+        {
+          "name": "instance_url",
+          "label": "Instance URL",
+          "type": "string",
+          "required": true,
+          "description": "Your Salesforce instance URL (e.g., https://your-instance.salesforce.com)"
+        },
+        {
+          "name": "api_version",
+          "label": "API Version",
+          "type": "select",
+          "required": true,
+          "options": ["v57.0", "v56.0", "v55.0"],
+          "default": "v57.0"
+        }
+      ],
+      "wfBuilderFunction": "setup_salesforce_integration"
+    },
+    {
+      "connectorId": "sap",
+      "name": "SAP",
+      "description": "Connect to SAP ERP system to access business data and perform operations",
+      "parameters": [
+        {
+          "name": "system_id",
+          "label": "System ID",
+          "type": "string",
+          "required": true,
+          "description": "Your SAP system ID"
+        },
+        {
+          "name": "client_number",
+          "label": "Client Number",
+          "type": "string",
+          "required": true,
+          "description": "SAP client number"
+        },
+        {
+          "name": "interface_type",
+          "label": "Interface Type",
+          "type": "select",
+          "required": true,
+          "options": ["RFC", "BAPI", "IDOC"],
+          "default": "RFC"
+        }
+      ],
+      "wfBuilderFunction": "setup_sap_integration"
+    }
+  ]
+}

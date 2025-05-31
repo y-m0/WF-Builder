@@ -1,0 +1,40 @@
+{
+  "rules": [
+    {
+      "ruleId": "pii_handling",
+      "name": "PII Data Protection",
+      "description": "Ensures proper handling of Personally Identifiable Information (PII)",
+      "conditions": {
+        "dataType": ["PII_EMAIL", "PII_PHONE", "PII_ADDRESS"],
+        "targetServiceCategory": ["ExternalAnalyticsService", "ThirdPartyService"]
+      },
+      "requiredAction": {
+        "toolName": "AnonymizerTool",
+        "placement": "before_target_service",
+        "parameters": {
+          "anonymizationLevel": "high",
+          "preserveFormat": true
+        }
+      },
+      "messageToUser": "This workflow involves {dataType} data being sent to an external service. For compliance, we need to add an anonymization step first."
+    },
+    {
+      "ruleId": "financial_audit",
+      "name": "Financial Data Audit Trail",
+      "description": "Ensures proper audit trail for financial data processing",
+      "conditions": {
+        "dataType": ["FINANCIAL_TRANSACTION", "ACCOUNTING_RECORD"],
+        "operationType": ["modification", "deletion"]
+      },
+      "requiredAction": {
+        "toolName": "AuditLoggerTool",
+        "placement": "after_operation",
+        "parameters": {
+          "logLevel": "detailed",
+          "retentionPeriod": "7years"
+        }
+      },
+      "messageToUser": "This operation on financial data requires detailed audit logging for compliance purposes."
+    }
+  ]
+}
