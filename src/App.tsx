@@ -26,12 +26,12 @@ interface WorkflowData {
 }
 
 const nodeTypes = [
-  { type: 'trigger', label: 'Email Trigger', icon: Zap, color: 'bg-blue-900/20 border-blue-500/30 hover:bg-blue-900/30' },
-  { type: 'action', label: 'Send Message', icon: Bot, color: 'bg-green-900/20 border-green-500/30 hover:bg-green-900/30' },
-  { type: 'condition', label: 'Check Status', icon: GitBranch, color: 'bg-yellow-900/20 border-yellow-500/30 hover:bg-yellow-900/30' },
-  { type: 'agent', label: 'AI Agent', icon: Bot, color: 'bg-purple-900/20 border-purple-500/30 hover:bg-purple-900/30' },
-  { type: 'logic', label: 'Human Step', icon: User, color: 'bg-pink-900/20 border-pink-500/30 hover:bg-pink-900/30' },
-  { type: 'io', label: 'Database', icon: Database, color: 'bg-slate-800/40 border-slate-500/30 hover:bg-slate-800/60' },
+  { type: 'trigger', label: 'Event Trigger', icon: Zap, color: 'bg-primary/20 border-primary/30 hover:bg-primary/30' },
+  { type: 'action', label: 'Action Step', icon: Bot, color: 'bg-green-900/20 border-green-500/30 hover:bg-green-900/30' },
+  { type: 'condition', label: 'Decision Gate', icon: GitBranch, color: 'bg-yellow-900/20 border-yellow-500/30 hover:bg-yellow-900/30' },
+  { type: 'agent', label: 'AI Service', icon: Bot, color: 'bg-purple-900/20 border-purple-500/30 hover:bg-purple-900/30' },
+  { type: 'logic', label: 'Process Step', icon: User, color: 'bg-pink-900/20 border-pink-500/30 hover:bg-pink-900/30' },
+  { type: 'io', label: 'Data Operation', icon: Database, color: 'bg-slate-800/40 border-slate-500/30 hover:bg-slate-800/60' },
 ];
 
 function App() {
@@ -132,17 +132,17 @@ function App() {
     <Layout>
       <div className="flex h-[calc(100vh-4rem)]">
         {/* Sidebar */}
-        <div className="w-64 border-r border-border/40 bg-background/95 p-4">
+        <div className="w-64 border-r border-border/40 bg-background/95 p-4 backdrop-blur-sm">
           <h2 className="text-lg font-semibold mb-4 flex items-center text-foreground/90">
             <Workflow className="mr-2 h-5 w-5" />
-            Node Palette
+            Node Components
           </h2>
           <div className="space-y-2">
             {nodeTypes.map(({ type, label, icon: Icon, color }) => (
               <Button
                 key={type}
                 variant="outline"
-                className={`w-full justify-start border ${color}`}
+                className={`w-full justify-start border ${color} transition-colors duration-200`}
                 onClick={() => addNode(type as Node['type'], label)}
               >
                 <Icon className="mr-2 h-4 w-4" />
@@ -155,7 +155,7 @@ function App() {
         {/* Main Canvas */}
         <div className="flex-1 flex flex-col">
           {/* Header */}
-          <div className="border-b border-border/40 bg-background/95 p-4">
+          <div className="border-b border-border/40 bg-background/95 p-4 backdrop-blur-sm">
             <div className="flex items-center justify-between">
               <div className="flex items-center space-x-4">
                 <input
