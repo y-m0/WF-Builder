@@ -1,4 +1,4 @@
-# Orchestration Nexus UI & Workflow Builder
+# Workflow Builder
 
 This application provides a comprehensive interface for designing and managing workflows. It features both a traditional visual workflow editor and an innovative chatbot-driven workflow builder powered by Gemini.
 
@@ -30,7 +30,7 @@ In the project directory, you can run:
 ### `npm run dev`
 
 Runs the main frontend app in development mode.
-Open [http://localhost:5173](http://localhost:5173) (or a similar port indicated by Vite) to view it in the browser.
+Open [http://localhost:....](http://localhost:....) (or a similar port) to view it in the browser.
 
 The page will reload if you make edits.
 You will also see any lint errors in the console.
@@ -38,7 +38,7 @@ You will also see any lint errors in the console.
 ### `npm run dev:backend`
 
 Runs the backend server (currently for the WF-Builder's chatbot functionality) in watch mode.
-This is necessary for the `/workflows/builder` interface to communicate with the Gemini API.
+This is necessary for the `/workflows/builder` interface to communicate with the API.
 The server typically runs on `http://localhost:3000`.
 
 ### `npm run build`
